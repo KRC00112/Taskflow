@@ -272,20 +272,20 @@ cd terraform
 terraform destroy
 ```
 
-## Design Decisions
+# Design Decisions
 
-**Separating API and Worker services**
+- **Separating API and Worker services**
+  
+  The API can respond immediately without waiting for processing to complete. If the worker is slow or crashes, the API stays unaffected. This is the foundation of any resilient backend system.
 
-The API can respond immediately without waiting for processing to complete. If the worker is slow or crashes, the API stays unaffected. This is the foundation of any resilient backend system.
+- **Choosing RabbitMQ over direct HTTP calls between services**
+  
+  Direct HTTP between services creates tight coupling. If the worker is down, the API fails too. RabbitMQ acts as a buffer: jobs queue up and are processed when the worker is ready. Quorum queues ensure no jobs are lost even if RabbitMQ restarts.
 
-**Choosing RabbitMQ over direct HTTP calls between services**
+- **Docker Compose over Kubernetes**
+  
+  Kubernetes adds significant operational overhead that isn't justified for a two-service system. Docker Compose keeps the deployment simple and reproducible while still demonstrating containerization and multi-service orchestration.
 
-Direct HTTP between services creates tight coupling. If the worker is down, the API fails too. RabbitMQ acts as a buffer: jobs queue up and are processed when the worker is ready. Quorum queues ensure no jobs are lost even if RabbitMQ restarts.
-
-**Docker Compose over Kubernetes**
-
-Kubernetes adds significant operational overhead that isn't justified for a two-service system. Docker Compose keeps the deployment simple and reproducible while still demonstrating containerization and multi-service orchestration.
-
-**Terraform over manual AWS setup**
-
-Infrastructure as code means the entire AWS setup can be recreated from scratch with one command. No clicking through consoles, no undocumented manual steps.
+- **Terraform over manual AWS setup**
+  
+  Infrastructure as code means the entire AWS setup can be recreated from scratch with one command. No clicking through consoles, no undocumented manual steps.
