@@ -75,7 +75,7 @@ The worker picks up the job and updates the status: `pending → processing (wai
 
 ## Demo Video
 
-<video src="demo/demo.mp4" width="320" height="240" controls></video>
+https://github.com/user-attachments/assets/8ef9c741-9bdb-4453-b5a5-8501aa9e17bf
 
 
 ## CI/CD Pipeline
