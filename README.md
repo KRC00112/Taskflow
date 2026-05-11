@@ -71,7 +71,7 @@ Send a POST request to `http://<PUBLIC_IP>:3000` with the following JSON body:
 }
 ```
 
-The worker picks up the job and updates the status: `pending → processing → done`.
+The worker picks up the job and updates the status: `pending → processing (wait 10 secs) → done`.
 
 ## CI/CD Pipeline
 
@@ -112,7 +112,7 @@ This section walks you through deploying Taskflow to your own AWS account from s
 
 ### 1. Fork the Repository
 
-Fork this repository to your own GitHub account. All subsequent steps assume you are working from your fork, not the original repo. This is required so you can add your own GitHub secrets and set up CI/CD pointing to your own EC2 instance.
+Fork this repository to your own GitHub account before doing anything else. All subsequent steps assume you are working from your fork. This matters for two reasons: your GitHub secrets and CI/CD pipeline need to point to a repo you own, and Terraform will clone your fork onto the EC2 instance so that future deployments pull from the right place.
 
 ### 2. Prerequisites
 
@@ -137,7 +137,7 @@ Press enter twice for no passphrase. This creates `taskflow-key` (private) and `
 Clone your forked repository and navigate to the terraform folder:
 
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/Taskflow.git
+git clone https://github.com/<YOUR_GITHUB_USERNAME>/Taskflow.git
 cd Taskflow/terraform
 ```
 
@@ -145,7 +145,7 @@ Initialize Terraform and apply:
 
 ```bash
 terraform init
-terraform apply
+terraform apply -var username=<YOUR_GITHUB_USERNAME>
 ```
 
 Terraform will create:
@@ -272,20 +272,20 @@ cd terraform
 terraform destroy
 ```
 
-## Design Decisions
+# Design Decisions
 
-**Separating API and Worker services**
+- **Separating API and Worker services**
+  
+  The API can respond immediately without waiting for processing to complete. If the worker is slow or crashes, the API stays unaffected. This is the foundation of any resilient backend system.
 
-The API can respond immediately without waiting for processing to complete. If the worker is slow or crashes, the API stays unaffected. This is the foundation of any resilient backend system.
+- **Choosing RabbitMQ over direct HTTP calls between services**
+  
+  Direct HTTP between services creates tight coupling. If the worker is down, the API fails too. RabbitMQ acts as a buffer: jobs queue up and are processed when the worker is ready. Quorum queues ensure no jobs are lost even if RabbitMQ restarts.
 
-**Choosing RabbitMQ over direct HTTP calls between services**
+- **Docker Compose over Kubernetes**
+  
+  Kubernetes adds significant operational overhead that isn't justified for a two-service system. Docker Compose keeps the deployment simple and reproducible while still demonstrating containerization and multi-service orchestration.
 
-Direct HTTP between services creates tight coupling. If the worker is down, the API fails too. RabbitMQ acts as a buffer: jobs queue up and are processed when the worker is ready. Quorum queues ensure no jobs are lost even if RabbitMQ restarts.
-
-**Docker Compose over Kubernetes**
-
-Kubernetes adds significant operational overhead that isn't justified for a two-service system. Docker Compose keeps the deployment simple and reproducible while still demonstrating containerization and multi-service orchestration.
-
-**Terraform over manual AWS setup**
-
-Infrastructure as code means the entire AWS setup can be recreated from scratch with one command. No clicking through consoles, no undocumented manual steps.
+- **Terraform over manual AWS setup**
+  
+  Infrastructure as code means the entire AWS setup can be recreated from scratch with one command. No clicking through consoles, no undocumented manual steps.
