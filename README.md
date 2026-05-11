@@ -73,6 +73,11 @@ Send a POST request to `http://<PUBLIC_IP>:3000` with the following JSON body:
 
 The worker picks up the job and updates the status: `pending → processing (wait 10 secs) → done`.
 
+## Demo Video
+
+<video src="demo/demo.mp4" width="320" height="240" controls></video>
+
+
 ## CI/CD Pipeline
 
 Every push to `main` triggers a GitHub Actions workflow that:
