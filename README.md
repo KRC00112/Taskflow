@@ -132,7 +132,7 @@ You will be prompted for your AWS Access Key ID, Secret Access Key, default regi
 Generate an SSH key pair if you don't have one already:
 
 ```bash
-ssh-keygen -t rsa -b 4096 -f ~/.ssh/taskflow-key
+ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\taskflow-key"
 ```
 
 Press enter twice for no passphrase. This creates `taskflow-key` (private) and `taskflow-key.pub` (public) in `~/.ssh/`.
