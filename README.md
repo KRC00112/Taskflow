@@ -139,7 +139,7 @@ ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\taskflow-key"
 
 Press enter twice for no passphrase. This creates `taskflow-key` (private) and `taskflow-key.pub` (public) in `~/.ssh/`.
 
-### 3. Provision Infrastructure with Terraform
+### 3. Provisioned Infrastructure with Terraform
 
 Clone your forked repository and navigate to the terraform folder:
 
