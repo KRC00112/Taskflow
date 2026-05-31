@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-west-2"
 }
 
+
 resource "aws_security_group" "taskflow_sg" {
   name        = "taskflow-sg"
   description = "Taskflow security group"
@@ -50,6 +51,7 @@ data "aws_ami" "ubuntu" {
 
   owners = ["099720109477"] # Canonical
 }
+
 
 resource "aws_instance" "app_server" {
   ami                         = data.aws_ami.ubuntu.id
