@@ -1,5 +1,7 @@
 # Taskflow
 
+[![deploy-to-ec2](https://github.com/KRC00112/Taskflow/actions/workflows/deploy-to-ec2.yml/badge.svg)](https://github.com/KRC00112/Taskflow/actions/workflows/deploy-to-ec2.yml)
+
 A distributed task processing system built with a microservices architecture. Demonstrates asynchronous job processing, message queuing, containerization, cloud deployment, and CI/CD automation.
 
 ## What it is
@@ -73,6 +75,11 @@ Send a POST request to `http://<PUBLIC_IP>:3000` with the following JSON body:
 
 The worker picks up the job and updates the status: `pending → processing (wait 10 secs) → done`.
 
+## Demo Video
+
+https://github.com/user-attachments/assets/8ef9c741-9bdb-4453-b5a5-8501aa9e17bf
+
+
 ## CI/CD Pipeline
 
 Every push to `main` triggers a GitHub Actions workflow that:
@@ -127,7 +134,7 @@ You will be prompted for your AWS Access Key ID, Secret Access Key, default regi
 Generate an SSH key pair if you don't have one already:
 
 ```bash
-ssh-keygen -t rsa -b 4096 -f ~/.ssh/taskflow-key
+ssh-keygen -t rsa -b 4096 -f "$env:USERPROFILE\.ssh\taskflow-key"
 ```
 
 Press enter twice for no passphrase. This creates `taskflow-key` (private) and `taskflow-key.pub` (public) in `~/.ssh/`.
