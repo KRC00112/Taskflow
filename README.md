@@ -2,7 +2,7 @@
 
 [![deploy-to-ec2](https://github.com/KRC00112/Taskflow/actions/workflows/deploy-to-ec2.yml/badge.svg)](https://github.com/KRC00112/Taskflow/actions/workflows/deploy-to-ec2.yml)
 
-A distributed task processing system built with a microservices architecture. Demonstrates asynchronous job processing, message queuing, containerization, cloud deployment, and CI/CD automation.
+A distributed task processing system built with a microservices architecture. This project Demonstrates asynchronous job processing, message queuing, containerization, cloud deployment, and CI/CD automation.
 
 ## What it is
 
