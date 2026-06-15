@@ -44,14 +44,11 @@ app.get('/', async (req,res)=>{
 
 app.get('/metrics', async (req, res) => {
     try {
-        const client = await pool.connect();
 
-        const total = await client.query("SELECT COUNT(*) FROM tasks");
-        const pending = await client.query("SELECT COUNT(*) FROM tasks WHERE status='pending'");
-        const processing = await client.query("SELECT COUNT(*) FROM tasks WHERE status='processing'");
-        const done = await client.query("SELECT COUNT(*) FROM tasks WHERE status='done'");
-
-        client.release();
+        const total = await pool.query("SELECT COUNT(*) FROM tasks");
+        const pending = await pool.query("SELECT COUNT(*) FROM tasks WHERE status='pending'");
+        const processing = await pool.query("SELECT COUNT(*) FROM tasks WHERE status='processing'");
+        const done = await pool.query("SELECT COUNT(*) FROM tasks WHERE status='done'");
 
         res.json({
             tasks_total: parseInt(total.rows[0].count),
